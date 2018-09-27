@@ -78,50 +78,30 @@ class FreedomCat(object):
     def wrap(self, *codes):
         return '\x1b[%sm' % (''.join(codes),)
 
-    def rainbow(self, freq, i):
-        r = math.sin(freq * i) * 127 + 128
-        g = math.sin(freq * i + 2 * math.pi / 3) * 127 + 128
-        b = math.sin(freq * i + 4 * math.pi / 3) * 127 + 128
-        return [r, g, b]
+    # def rainbow(self, freq, i):
+    #     r = math.sin(freq * i) * 127 + 128
+    #     g = math.sin(freq * i + 2 * math.pi / 3) * 127 + 128
+    #     b = math.sin(freq * i + 4 * math.pi / 3) * 127 + 128
+    #     return [r, g, b]
 
     def cat(self, fd, options):
-        if options.animate:
-            self.output.write('\x1b[?25l')
-
         for line in fd:
-            options.os += 1
             self.println(line, options)
-
-        if options.animate:
-            self.output.write('\x1b[?25h')
 
     def println(self, s, options):
         s = s.rstrip()
         if options.force or self.output.isatty():
             s = STRIP_ANSI.sub('', s)
 
-        if options.animate:
-            self.println_ani(s, options)
-        else:
-            self.println_plain(s, options)
+        self.println_plain(s, options)
 
         self.output.write('\n')
         self.output.flush()
 
-    def println_ani(self, s, options):
-        if not s:
-            return
-
-        for i in range(1, options.duration):
-            self.output.write('\x1b[%dD' % (len(s),))
-            self.output.flush()
-            options.os += options.spread
-            self.println_plain(s, options)
-            time.sleep(1.0 / options.speed)
-
     def println_plain(self, s, options):
         for i, c in enumerate(s if PY3 else s.decode(options.charset_py2, 'replace')):
-            rgb = self.rainbow(options.freq, options.os + i / options.spread)
+            # rgb = self.rainbow(options.freq, options.os + i / options.spread)
+            rgb = [100, 100, 100]
             self.output.write(''.join([
                 self.wrap(self.ansi(rgb)),
                 c if PY3 else c.encode(options.charset_py2, 'replace'),
@@ -151,18 +131,6 @@ def run():
     import optparse
 
     parser = optparse.OptionParser(usage=r'%prog [<options>] [file ...]')
-    parser.add_option('-p', '--spread', type='float', default=3.0,
-        help='Rainbow spread')
-    parser.add_option('-F', '--freq', type='float', default=0.1,
-        help='Rainbow frequency')
-    parser.add_option('-S', '--seed', type='int', default=0,
-        help='Rainbow seed')
-    parser.add_option('-a', '--animate', action='store_true', default=False,
-        help='Enable psychedelics')
-    parser.add_option('-d', '--duration', type='int', default=12,
-        help='Animation duration')
-    parser.add_option('-s', '--speed', type='float', default=20.0,
-        help='Animation speed')
     parser.add_option('-f', '--force', action='store_true', default=False,
         help='Force colour even when stdout is not a tty')
 
@@ -177,7 +145,6 @@ def run():
             help='Manually set a charset to convert from, for python 2.7')
 
     options, args = parser.parse_args()
-    options.os = random.randint(0, 256) if options.seed == 0 else options.seed
     options.mode = options.mode or detect_mode()
 
     freedomcat = FreedomCat(mode=options.mode)
