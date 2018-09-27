@@ -1,10 +1,11 @@
 #!/usr/bin/env python
 #
-# "THE BEER-WARE LICENSE" (Revision 43~maze)
+# "THE BEER-WARE LICENSE" (Revision 43~ktjubar)
 #
-# <maze@pyth0n.org> wrote these files. As long as you retain this notice you
-# can do whatever you want with this stuff. If we meet some day, and you think
-# this stuff is worth it, you can buy me a beer in return.
+# <maze@pyth0n.org> wrote these files, <ktjubar@vt.edu> modified them.
+# As long as you retain this notice you can do whatever you want with
+# this stuff. If we meet some day, and you think this stuff is worth it,
+# you can buy me a beer in return.
 
 import atexit
 import math
@@ -36,7 +37,7 @@ COLOR_ANSI = (
     (0x00, 0xff, 0xff), (0xff, 0xff, 0xff),
 )
 
-class LolCat(object):
+class FreedomCat(object):
     def __init__(self, mode=256, output=sys.stdout):
         self.mode = mode
         self.output = output
@@ -179,18 +180,18 @@ def run():
     options.os = random.randint(0, 256) if options.seed == 0 else options.seed
     options.mode = options.mode or detect_mode()
 
-    lolcat = LolCat(mode=options.mode)
+    freedomcat = FreedomCat(mode=options.mode)
 
     if not args:
         args = ['-']
 
     for filename in args:
         if filename == '-':
-            lolcat.cat(sys.stdin, options)
+            freedomcat.cat(sys.stdin, options)
         else:
             try:
                 with open(filename, 'r') as handle:
-                    lolcat.cat(handle, options)
+                    freedomcat.cat(handle, options)
             except IOError as error:
                 sys.stderr.write(str(error) + '\n')
 
