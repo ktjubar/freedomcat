@@ -2,11 +2,11 @@
 
 from setuptools import setup
 
-setup(name='lolcat',
-      version='0.44',
-      description='Rainbows and unicorns!',
-      author='Wijnand Modderman-Lenstra',
-      author_email='maze@pyth0n.org',
-      url='https://github.com/tehmaze/lolcat/',
-      scripts=['lolcat'],
+setup(name='freedomcat',
+      version='0.01',
+      description='Freedom and more freedom!',
+      author='Kaleb Jubar',
+      author_email='ktjubar@vt.edu',
+      url='https://github.com/ktjubar/freedomcat/',
+      scripts=['freedomcat'],
      )

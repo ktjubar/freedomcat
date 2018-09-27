@@ -1,4 +1,4 @@
-include lolcat
+include freedomcat
 include *.md
 include *.png
 include *.py
