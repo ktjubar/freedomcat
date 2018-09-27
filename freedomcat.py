@@ -8,12 +8,9 @@
 # you can buy me a beer in return.
 
 import atexit
-import math
 import os
-import random
 import re
 import sys
-import time
 
 PY3 = sys.version_info >= (3,)
 
